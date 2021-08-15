@@ -1,8 +1,8 @@
 export function getStaticProps() {
   return {
     props: {
-      id: 1
-    }
+      id: 1,
+    },
   }
 }
 
@@ -11,20 +11,19 @@ export function getStaticPaths() {
     paths: [
       {
         params: {
-          id: "1"
-        }
+          id: '1',
+        },
       },
       {
         params: {
-          id: "2"
+          id: '2',
         },
-      }
+      },
     ],
-    fallback: false
+    fallback: false,
   }
 }
 
-
-export default function Project({id}) {
+export default function Project({ id }) {
   return <h1>{id}</h1>
 }

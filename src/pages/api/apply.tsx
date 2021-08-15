@@ -1,22 +1,14 @@
-import {NextApiHandler, NextApiRequest, NextApiResponse} from "next";
-import {personSchema} from "../../schemas/person";
-import {ObjectShape, OptionalObjectSchema} from "yup/lib/object";
+import { NextApiRequest, NextApiResponse } from 'next'
+import { personSchema } from '../../schemas/person'
+import validate from '../../lib/validate'
 
-const handler = (req: NextApiRequest, res: NextApiResponse) => {
-  res.status(200).json({...req.body, method: req.method})
-}
-
-export function validate(schema: OptionalObjectSchema<ObjectShape>, handler: NextApiHandler) {
-  return async (req: NextApiRequest, res: NextApiResponse) => {
-    if (['POST', 'PUT'].includes(req.method)) {
-      try {
-        await schema.validate(req.body)
-      } catch (error) {
-        return res.status(400).json(error)
-      }
-    }
-    await handler(req, res)
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+  try {
+    await validate(personSchema, req)
+    res.status(200).json({ ...req.body, method: req.method })
+  } catch (error) {
+    res.status(400).json(error)
   }
 }
 
-export default validate(personSchema, handler)
+export default handler
